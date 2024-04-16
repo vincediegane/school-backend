@@ -37,8 +37,8 @@ public class SchoolApplication {
 					int index = random.nextInt(paymentTypes.length);
 					Payment payment = Payment.builder()
 						.amount(1000+(int)(Math.random()+20000))
-						.paymentType(paymentTypes[index])
-						.paymentStatus(PaymentStatus.CREATED)
+						.type(paymentTypes[index])
+						.status(PaymentStatus.CREATED)
 						.date(LocalDate.now())
 						.build();
 					paymentRepository.save(payment);
