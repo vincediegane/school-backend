@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/payments")
 public class PaymentController {
 
     private final PaymentService paymentService;
@@ -23,17 +23,17 @@ public class PaymentController {
         this.paymentService = paymentService;
     }
 
-    @GetMapping("/payments")
+    @GetMapping("/")
     public List<Payment> findAllPayments() {
         return paymentService.findAllPayments();
     }
 
-    @GetMapping("/payments/{id}")
+    @GetMapping("/{id}")
     public Payment findById(@PathVariable Long id) {
         return paymentService.findById(id);
     }
 
-    @GetMapping("/payments/{code}/students")
+    @GetMapping("/{code}/students")
     public List<Payment> findPaymentByStudentCode(@PathVariable String code) {
         return paymentService.findPaymentByStudentCode(code);
     }

@@ -40,6 +40,7 @@ public class SchoolApplication {
 						.type(paymentTypes[index])
 						.status(PaymentStatus.CREATED)
 						.date(LocalDate.now())
+						.student(student)
 						.build();
 					paymentRepository.save(payment);
 				}
