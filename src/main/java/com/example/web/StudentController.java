@@ -1,5 +1,6 @@
 package com.example.web;
 
+import com.example.exceptions.StudentNotFoundException;
 import com.example.model.Student;
 import com.example.service.StudentService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,7 +25,7 @@ public class StudentController {
     }
 
     @GetMapping("/{id}")
-    public Student findStudentById(@PathVariable String id) {
+    public Student findStudentById(@PathVariable String id) throws StudentNotFoundException {
         return studentService.findStudentById(id);
     }
 
