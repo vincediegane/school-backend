@@ -8,8 +8,15 @@ import com.example.service.PaymentService;
 import com.example.service.StudentService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -47,8 +54,18 @@ public class PaymentController {
         return paymentService.findByType(type);
     }
 
+    @GetMapping(value = "/paymentFile/{paymentId}", produces = MediaType.APPLICATION_PDF_VALUE)
+    public byte[] getPaymentFile(@PathVariable Long paymentId) throws IOException {
+        return paymentService.getPaymentFile(paymentId);
+    }
+
+    @PostMapping(value = "/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public Payment createPayment(@RequestParam MultipartFile file, LocalDate date, double amount, PaymentType type, String studentCode) throws IOException {
+        return paymentService.savePayment(file, date, amount, type, studentCode);
+    }
+
     @PutMapping("/{id}/updateStatus")
-    public Payment updatePaymentStatus(@PathVariable Long id, @RequestBody PaymentStatus status) {
+    public Payment updatePaymentStatus(@PathVariable Long id, @RequestParam PaymentStatus status) {
         return paymentService.updatePaymentStatus(id, status);
     }
 }
