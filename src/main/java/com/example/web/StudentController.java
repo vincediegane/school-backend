@@ -3,10 +3,7 @@ package com.example.web;
 import com.example.exceptions.StudentNotFoundException;
 import com.example.model.Student;
 import com.example.service.StudentService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -33,4 +30,22 @@ public class StudentController {
     public List<Student> findStudentsByProgramId(@PathVariable String programId) {
         return studentService.findStudentByProgramId(programId);
     }
+
+    @PostMapping("/")
+    public Student createStudent(@RequestBody Student student) {
+        return studentService.createStudent(student);
+    }
+
+    @PutMapping("/{id}")
+    public Student createStudent(@PathVariable String id, @RequestBody Student student) {
+        student.setId(id);
+        return studentService.updateStudent(student);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteStudent(@PathVariable String id) {
+        studentService.deleteStudent(id);
+    }
+
+
 }

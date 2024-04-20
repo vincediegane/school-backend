@@ -7,7 +7,6 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Scanner;
 
 @Service
 @Transactional
@@ -31,5 +30,20 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public List<Student> findStudentByProgramId(String programId) {
         return studentRepository.findByProgramId(programId);
+    }
+
+    @Override
+    public Student updateStudent(Student student) {
+        return studentRepository.save(student);
+    }
+
+    @Override
+    public Student createStudent(Student student) {
+        return studentRepository.save(student);
+    }
+
+    @Override
+    public void deleteStudent(String id) {
+        studentRepository.deleteById(id);
     }
 }
