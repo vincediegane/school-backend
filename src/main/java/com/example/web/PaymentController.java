@@ -1,21 +1,14 @@
 package com.example.web;
 
+import com.example.dto.PaymentDTO;
 import com.example.enumeration.PaymentStatus;
 import com.example.enumeration.PaymentType;
-import com.example.exceptions.PaymentNotFoundException;
-import com.example.model.Payment;
 import com.example.service.PaymentService;
-import com.example.service.StudentService;
-import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.net.URI;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -30,27 +23,27 @@ public class PaymentController {
     }
 
     @GetMapping("/")
-    public List<Payment> findAllPayments() {
+    public List<PaymentDTO> findAllPayments() {
         return paymentService.findAllPayments();
     }
 
     @GetMapping("/{id}")
-    public Payment findById(@PathVariable Long id) {
+    public PaymentDTO findById(@PathVariable Long id) {
         return paymentService.findById(id);
     }
 
     @GetMapping("/{code}/students")
-    public List<Payment> findPaymentByStudentCode(@PathVariable String code) {
+    public List<PaymentDTO> findPaymentByStudentCode(@PathVariable String code) {
         return paymentService.findPaymentByStudentCode(code);
     }
 
     @GetMapping("/byStatus")
-    public List<Payment> findByStatus(@RequestParam PaymentStatus status) {
+    public List<PaymentDTO> findByStatus(@RequestParam PaymentStatus status) {
         return paymentService.findByStatus(status);
     }
 
     @GetMapping("/byType")
-    public List<Payment> findByType(@RequestParam PaymentType type) {
+    public List<PaymentDTO> findByType(@RequestParam PaymentType type) {
         return paymentService.findByType(type);
     }
 
@@ -60,12 +53,12 @@ public class PaymentController {
     }
 
     @PostMapping(value = "/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public Payment createPayment(@RequestParam MultipartFile file, LocalDate date, double amount, PaymentType type, String studentCode) throws IOException {
+    public PaymentDTO createPayment(@RequestParam MultipartFile file, LocalDate date, double amount, PaymentType type, String studentCode) throws IOException {
         return paymentService.savePayment(file, date, amount, type, studentCode);
     }
 
     @PutMapping("/{id}/updateStatus")
-    public Payment updatePaymentStatus(@PathVariable Long id, @RequestParam PaymentStatus status) {
+    public PaymentDTO updatePaymentStatus(@PathVariable Long id, @RequestParam PaymentStatus status) {
         return paymentService.updatePaymentStatus(id, status);
     }
 }

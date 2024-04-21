@@ -1,8 +1,10 @@
 package com.example.service;
 
+import com.example.dto.PaymentDTO;
 import com.example.enumeration.PaymentStatus;
 import com.example.enumeration.PaymentType;
 import com.example.exceptions.PaymentNotFoundException;
+import com.example.mapper.MapperImpl;
 import com.example.model.Payment;
 import com.example.model.Student;
 import com.example.repository.PaymentRepository;
@@ -26,46 +28,54 @@ public class PaymentServiceImpl implements PaymentService {
 
     private final PaymentRepository paymentRepository;
     private final StudentRepository studentRepository;
+    private final MapperImpl mapper;
 
-    public PaymentServiceImpl(PaymentRepository paymentRepository, StudentRepository studentRepository) {
+    public PaymentServiceImpl(PaymentRepository paymentRepository, StudentRepository studentRepository, MapperImpl mapper) {
         this.paymentRepository = paymentRepository;
         this.studentRepository = studentRepository;
+        this.mapper = mapper;
     }
 
     @Override
-    public List<Payment> findAllPayments() {
-        return paymentRepository.findAll();
+    public List<PaymentDTO> findAllPayments() {
+        List<Payment> payments = paymentRepository.findAll();
+        return payments.stream().map(mapper::fromPayment).toList();
     }
 
     @Override
-    public List<Payment> findPaymentByStudentCode(String code) {
-        return paymentRepository.findByStudentCode(code);
+    public List<PaymentDTO> findPaymentByStudentCode(String code) {
+        List<Payment> payments = paymentRepository.findByStudentCode(code);
+        return payments.stream().map(mapper::fromPayment).toList();
     }
 
     @Override
-    public List<Payment> findByType(PaymentType type) {
-        return paymentRepository.findByType(type);
+    public List<PaymentDTO> findByType(PaymentType type) {
+        List<Payment> payments = paymentRepository.findByType(type);
+        return payments.stream().map(mapper::fromPayment).toList();
     }
 
     @Override
-    public List<Payment> findByStatus(PaymentStatus status) {
-        return paymentRepository.findByStatus(status);
+    public List<PaymentDTO> findByStatus(PaymentStatus status) {
+        List<Payment> payments = paymentRepository.findByStatus(status);
+        return payments.stream().map(mapper::fromPayment).toList();
     }
 
     @Override
-    public Payment findById(Long id) {
-        return paymentRepository.findById(id).orElseThrow(() -> new PaymentNotFoundException("Payment not found"));
+    public PaymentDTO findById(Long id) {
+        Payment payment = paymentRepository.findById(id).orElseThrow(() -> new PaymentNotFoundException("Payment not found"));
+        return mapper.fromPayment(payment);
     }
 
     @Override
-    public Payment updatePaymentStatus(Long id, PaymentStatus status) {
-        Payment payment = paymentRepository.findById(id).get();
-        payment.setStatus(status);
-        return paymentRepository.save(payment);
+    public PaymentDTO updatePaymentStatus(Long id, PaymentStatus status) {
+        PaymentDTO paymentDTO = findById(id);
+        paymentDTO.setStatus(status);
+        Payment payment = paymentRepository.save(mapper.fromPaymentDTO(paymentDTO));
+        return mapper.fromPayment(payment);
     }
 
     @Override
-    public Payment savePayment(MultipartFile file, LocalDate date, double amount, PaymentType type, String studentCode) throws IOException {
+    public PaymentDTO savePayment(MultipartFile file, LocalDate date, double amount, PaymentType type, String studentCode) throws IOException {
         Path folderPath = Paths.get(System.getProperty("user.home"), "bills", "payments");
         if(!Files.exists(folderPath)) {
             Files.createDirectories(folderPath);
@@ -82,12 +92,13 @@ public class PaymentServiceImpl implements PaymentService {
             .student(student)
             .type(type)
             .build();
-        return paymentRepository.save(payment);
+        Payment savedPayment = paymentRepository.save(payment);
+        return mapper.fromPayment(savedPayment);
     }
 
     @Override
     public byte[] getPaymentFile(Long paymentId) throws IOException {
-        Payment payment = findById(paymentId);
-        return Files.readAllBytes(Path.of(URI.create(payment.getFile())));
+        PaymentDTO paymentDTO = findById(paymentId);
+        return Files.readAllBytes(Path.of(URI.create(paymentDTO.getFile())));
     }
 }

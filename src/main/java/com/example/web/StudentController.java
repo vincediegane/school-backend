@@ -1,9 +1,15 @@
 package com.example.web;
 
+import com.example.dto.ErrorDTO;
+import com.example.dto.StudentDTO;
 import com.example.exceptions.StudentNotFoundException;
 import com.example.model.Student;
 import com.example.service.StudentService;
+import jakarta.persistence.EntityNotFoundException;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.List;
 
@@ -17,27 +23,27 @@ public class StudentController {
     }
 
     @GetMapping("/")
-    public List<Student> findAllStudent() {
+    public List<StudentDTO> findAllStudent() {
         return studentService.findAllStudents();
     }
 
     @GetMapping("/{id}")
-    public Student findStudentById(@PathVariable String id) throws StudentNotFoundException {
+    public StudentDTO findStudentById(@PathVariable String id) throws StudentNotFoundException {
         return studentService.findStudentById(id);
     }
 
     @GetMapping("/{programId}/program")
-    public List<Student> findStudentsByProgramId(@PathVariable String programId) {
+    public List<StudentDTO> findStudentsByProgramId(@PathVariable String programId) {
         return studentService.findStudentByProgramId(programId);
     }
 
     @PostMapping("/")
-    public Student createStudent(@RequestBody Student student) {
+    public StudentDTO createStudent(@RequestBody Student student) {
         return studentService.createStudent(student);
     }
 
     @PutMapping("/{id}")
-    public Student createStudent(@PathVariable String id, @RequestBody Student student) {
+    public StudentDTO createStudent(@PathVariable String id, @RequestBody Student student) {
         student.setId(id);
         return studentService.updateStudent(student);
     }
@@ -46,6 +52,4 @@ public class StudentController {
     public void deleteStudent(@PathVariable String id) {
         studentService.deleteStudent(id);
     }
-
-
 }

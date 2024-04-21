@@ -1,45 +1,53 @@
 package com.example.service;
 
+import com.example.dto.StudentDTO;
 import com.example.exceptions.StudentNotFoundException;
+import com.example.mapper.MapperImpl;
 import com.example.model.Student;
 import com.example.repository.StudentRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
 @Transactional
 public class StudentServiceImpl implements StudentService {
     private final StudentRepository studentRepository;
+    private final MapperImpl mapper;
 
-    public StudentServiceImpl(StudentRepository studentRepository) {
+    public StudentServiceImpl(StudentRepository studentRepository, MapperImpl mapper) {
         this.studentRepository = studentRepository;
+        this.mapper = mapper;
     }
 
     @Override
-    public List<Student> findAllStudents() {
-        return studentRepository.findAll();
+    public List<StudentDTO> findAllStudents() {
+        List<Student> students = studentRepository.findAll();
+        return students.stream().map(mapper::fromStudent).toList();
     }
 
     @Override
-    public Student findStudentById(String id) throws StudentNotFoundException {
-        return studentRepository.findById(id).orElseThrow(() -> new StudentNotFoundException("Student with id : "+ id + " not found"));
+    public StudentDTO findStudentById(String id) throws StudentNotFoundException {
+        Student student = studentRepository.findById(id).orElseThrow(() -> new StudentNotFoundException("Student with id : "+ id + " not found"));
+        return mapper.fromStudent(student);
     }
 
     @Override
-    public List<Student> findStudentByProgramId(String programId) {
-        return studentRepository.findByProgramId(programId);
+    public List<StudentDTO> findStudentByProgramId(String programId) {
+        List<Student> students = studentRepository.findByProgramId(programId);
+        return students.stream().map(mapper::fromStudent).toList();
     }
 
     @Override
-    public Student updateStudent(Student student) {
-        return studentRepository.save(student);
+    public StudentDTO updateStudent(Student student) {
+        Student savedStudent = studentRepository.save(student);
+        return mapper.fromStudent(savedStudent);
     }
 
     @Override
-    public Student createStudent(Student student) {
-        return studentRepository.save(student);
+    public StudentDTO createStudent(Student student) {
+        Student savedStudent = studentRepository.save(student);
+        return mapper.fromStudent(savedStudent);
     }
 
     @Override
