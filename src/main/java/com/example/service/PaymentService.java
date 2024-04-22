@@ -3,8 +3,6 @@ package com.example.service;
 import com.example.dto.PaymentDTO;
 import com.example.enumeration.PaymentStatus;
 import com.example.enumeration.PaymentType;
-import com.example.model.Payment;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -18,6 +16,6 @@ public interface PaymentService {
     List<PaymentDTO> findByStatus(PaymentStatus status);
     PaymentDTO findById(Long id);
     PaymentDTO updatePaymentStatus(Long id, PaymentStatus status);
-    PaymentDTO savePayment(MultipartFile file, LocalDate date, double amount, PaymentType type, String studentCode) throws IOException;
+    PaymentDTO savePayment(MultipartFile file, double amount, PaymentType type, String studentCode) throws IOException;
     byte[] getPaymentFile(Long paymentId) throws IOException;
 }

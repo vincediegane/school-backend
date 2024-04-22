@@ -53,8 +53,8 @@ public class PaymentController {
     }
 
     @PostMapping(value = "/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public PaymentDTO createPayment(@RequestParam MultipartFile file, LocalDate date, double amount, PaymentType type, String studentCode) throws IOException {
-        return paymentService.savePayment(file, date, amount, type, studentCode);
+    public PaymentDTO createPayment(@RequestParam MultipartFile file, double amount, PaymentType type, String studentCode) throws IOException {
+        return paymentService.savePayment(file, amount, type, studentCode);
     }
 
     @PutMapping("/{id}/updateStatus")

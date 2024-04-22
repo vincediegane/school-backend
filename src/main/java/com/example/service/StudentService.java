@@ -10,7 +10,7 @@ public interface StudentService {
     List<StudentDTO> findAllStudents();
     StudentDTO findStudentById(String id) throws StudentNotFoundException;
     List<StudentDTO> findStudentByProgramId(String programId);
-    StudentDTO updateStudent(Student student);
-    StudentDTO createStudent(Student student);
+    StudentDTO updateStudent(StudentDTO studentDTO);
+    StudentDTO createStudent(StudentDTO studentDTO);
     void deleteStudent(String id);
 }

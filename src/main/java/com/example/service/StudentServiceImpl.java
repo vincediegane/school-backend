@@ -39,14 +39,14 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public StudentDTO updateStudent(Student student) {
-        Student savedStudent = studentRepository.save(student);
+    public StudentDTO updateStudent(StudentDTO studentDTO) {
+        Student savedStudent = studentRepository.save(mapper.fromStudentDTO(studentDTO));
         return mapper.fromStudent(savedStudent);
     }
 
     @Override
-    public StudentDTO createStudent(Student student) {
-        Student savedStudent = studentRepository.save(student);
+    public StudentDTO createStudent(StudentDTO studentDTO) {
+        Student savedStudent = studentRepository.save(mapper.fromStudentDTO(studentDTO));
         return mapper.fromStudent(savedStudent);
     }
 

@@ -1,15 +1,9 @@
 package com.example.web;
 
-import com.example.dto.ErrorDTO;
 import com.example.dto.StudentDTO;
 import com.example.exceptions.StudentNotFoundException;
-import com.example.model.Student;
 import com.example.service.StudentService;
-import jakarta.persistence.EntityNotFoundException;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.List;
 
@@ -38,14 +32,14 @@ public class StudentController {
     }
 
     @PostMapping("/")
-    public StudentDTO createStudent(@RequestBody Student student) {
-        return studentService.createStudent(student);
+    public StudentDTO createStudent(@RequestBody StudentDTO studentDTO) {
+        return studentService.createStudent(studentDTO);
     }
 
     @PutMapping("/{id}")
-    public StudentDTO createStudent(@PathVariable String id, @RequestBody Student student) {
-        student.setId(id);
-        return studentService.updateStudent(student);
+    public StudentDTO createStudent(@PathVariable String id, @RequestBody StudentDTO studentDTO) {
+        studentDTO.setId(id);
+        return studentService.updateStudent(studentDTO);
     }
 
     @DeleteMapping("/{id}")

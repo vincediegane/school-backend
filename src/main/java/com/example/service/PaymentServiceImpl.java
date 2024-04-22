@@ -75,7 +75,7 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public PaymentDTO savePayment(MultipartFile file, LocalDate date, double amount, PaymentType type, String studentCode) throws IOException {
+    public PaymentDTO savePayment(MultipartFile file, double amount, PaymentType type, String studentCode) throws IOException {
         Path folderPath = Paths.get(System.getProperty("user.home"), "bills", "payments");
         if(!Files.exists(folderPath)) {
             Files.createDirectories(folderPath);
@@ -85,7 +85,7 @@ public class PaymentServiceImpl implements PaymentService {
         Files.copy(file.getInputStream(), filePath);
         Student student = studentRepository.findByCode(studentCode);
         Payment payment = Payment.builder()
-            .date(date)
+            .date(LocalDate.now())
             .amount(amount)
             .file(filePath.toUri().toString())
             .status(PaymentStatus.CREATED)
