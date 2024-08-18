@@ -83,6 +83,7 @@
 				</dependencies>
 			</plugin>
 		</plugins>
+		<finalName>school-backend-api</finalName>
 	</build>
 
 </project>
