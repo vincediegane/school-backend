@@ -22,16 +22,16 @@ public class StudentControllerTest {
     @MockBean
     private StudentService studentService;
 
-//    @Test
-//    void testFindAllStudents() throws Exception {
-//        StudentDTO student = StudentDTO.builder().id("1").firstName("Clemence").lastName("Diouf").programId("INFO1").build();
-//
-//        Mockito.when(studentService.findAllStudents()).thenReturn(List.of(student));
-//
-//        mockMvc.perform(get("/api/students/"))
-//            .andExpect(status().isOk())
-//            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-//            .andExpect(jsonPath("$[0].id").value("1"))
-//            .andExpect(jsonPath("$[0].firstName").value("Vincent"));
-//    }
+    @Test
+    void testFindAllStudents() throws Exception {
+        StudentDTO student = StudentDTO.builder().id("1").firstName("Clemence").lastName("Diouf").programId("INFO1").build();
+
+        Mockito.when(studentService.findAllStudents()).thenReturn(List.of(student));
+
+        mockMvc.perform(get("/api/students/"))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$[0].id").value("1"))
+            .andExpect(jsonPath("$[0].firstName").value("Vincent"));
+    }
 }
