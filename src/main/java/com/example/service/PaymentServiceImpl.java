@@ -91,7 +91,7 @@ public class PaymentServiceImpl implements PaymentService {
             .status(PaymentStatus.CREATED)
             .student(student)
             .type(type)
-            .build();
+        .build();
         Payment savedPayment = paymentRepository.save(payment);
         return mapper.fromPayment(savedPayment);
     }
