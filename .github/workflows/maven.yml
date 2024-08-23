@@ -28,7 +28,7 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Build with Maven
-      run: mvn clean install -Dmaven.test.skip=true
+      run: mvn clean install # To skip tests : -Dmaven.test.skip=true
 
     - name: Build & Push Docker Image
       uses: mr-smithers-excellent/docker-build-push@v5
