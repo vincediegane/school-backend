@@ -23,8 +23,7 @@ public class StudentControllerTest {
     @MockBean
     private StudentService studentService;
 
-    @Test
-    @Ignore
+
     void testFindAllStudents() throws Exception {
         StudentDTO student = StudentDTO.builder().id("1").firstName("Clemence").lastName("Diouf").programId("INFO1").build();
 
