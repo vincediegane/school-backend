@@ -29,6 +29,7 @@ public class SchoolApplication {
 			studentRepository.save(Student.builder().id(UUID.randomUUID().toString()).firstName("Babacar").lastName("Kadame").code("112244").programId("MPI").build());
 			studentRepository.save(Student.builder().id(UUID.randomUUID().toString()).firstName("Rokhaya").lastName("Diouf").code("112255").programId("BCG").build());
 			studentRepository.save(Student.builder().id(UUID.randomUUID().toString()).firstName("Aissatou").lastName("Kante").code("112266").programId("PCSM").build());
+			studentRepository.save(Student.builder().id(UUID.randomUUID().toString()).firstName("Modou").lastName("Diao").code("112277").programId("MPI").build());
 
 			PaymentType[] paymentTypes = PaymentType.values();
 			Random random = new Random();
