@@ -87,6 +87,7 @@ jobs:
           chmod 600 /tmp/private_key.pem
           ssh -o StrictHostKeyChecking=no -i /tmp/private_key.pem ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} << 'EOF'
             set -e
+          ls -al
             cat "${{ env.DOCKER_COMPOSE_FILE }}"
             if [ -f ${{ env.DOCKER_COMPOSE_FILE }} ]; then
               sudo docker compose down
