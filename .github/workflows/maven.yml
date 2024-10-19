@@ -71,7 +71,7 @@ jobs:
           
           services:
             school-backend:
-              image: "${{ env.REGISTRY }}:${{ env.ENV_SUFFIX }}"
+              image: "${{ env.REGISTRY }}:latest"
               environment:
                 USER: "postgres"
                 PASSWORD: "${{ env.DATABASE_PASSWORD }}"
