@@ -8,6 +8,7 @@ import com.example.repository.StudentRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @Transactional
@@ -46,6 +47,7 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public StudentDTO createStudent(StudentDTO studentDTO) {
+        studentDTO.setId(UUID.randomUUID().toString());
         Student savedStudent = studentRepository.save(mapper.fromStudentDTO(studentDTO));
         return mapper.fromStudent(savedStudent);
     }
