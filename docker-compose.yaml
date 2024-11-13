@@ -1,15 +1,17 @@
 version: '3.8'
 
 services:
-#  db:
-#    image: postgres
-#    container_name: db
-#    environment:
-#      - POSTGRES_USER=admin
-#      - POSTGRES_PASSWORD=admin
-#      - POSTGRES_DB=school-db
-#    ports:
-#      - "5432:5432"
+  db:
+    image: postgres:15
+    container_name: db
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=school_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
 
   school-app:
     image: vincediegane/demo-app
@@ -17,8 +19,10 @@ services:
     ports:
       - "8080:8080"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://school-db.c92yqq2aglv7.us-east-1.rds.amazonaws.com:5432/school-db
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: !!Snlr1992!!
-#    depends_on:
-#      - db
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/school_db
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: admin
+    depends_on:
+      - db
+volumes:
+  pgdata:
