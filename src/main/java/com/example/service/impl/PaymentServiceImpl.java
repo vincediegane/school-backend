@@ -1,4 +1,4 @@
-package com.example.service;
+package com.example.service.impl;
 
 import com.example.dto.PaymentDTO;
 import com.example.enumeration.PaymentStatus;
@@ -9,6 +9,7 @@ import com.example.model.Payment;
 import com.example.model.Student;
 import com.example.repository.PaymentRepository;
 import com.example.repository.StudentRepository;
+import com.example.service.PaymentService;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;

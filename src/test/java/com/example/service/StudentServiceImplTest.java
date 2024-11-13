@@ -1,24 +1,20 @@
 package com.example.service;
 
 import com.example.dto.StudentDTO;
-import com.example.enumeration.PaymentStatus;
-import com.example.enumeration.PaymentType;
 import com.example.exceptions.StudentNotFoundException;
 import com.example.mapper.MapperImpl;
-import com.example.model.Payment;
 import com.example.model.Student;
 import com.example.repository.StudentRepository;
+import com.example.service.impl.StudentServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;

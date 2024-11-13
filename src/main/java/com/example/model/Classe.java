@@ -11,12 +11,13 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Course {
+public class Classe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String courseName;
-
-    @ManyToMany(mappedBy = "courses")
-    private List<Classe> classes;
+    private String className;
+    private String schoolName;
+    private Integer number_of_students;
+    @ManyToMany
+    private List<Course> courses;
 }

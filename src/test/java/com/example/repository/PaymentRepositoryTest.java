@@ -37,7 +37,7 @@ public class PaymentRepositoryTest {
         );
     }
 
-    //@Test
+    @Test
     public void testFindByStudentCode() {
         Payment payment = createPayment(sampleStudent, PaymentStatus.CREATED, PaymentType.CASH);
         paymentRepository.save(payment);
@@ -48,7 +48,7 @@ public class PaymentRepositoryTest {
         assertThat(payments.get(0).getStudent().getCode()).isEqualTo("STD01");
     }
 
-    //@Test
+    @Test
     public void testFindByStatus() {
         Payment payment = createPayment(null, PaymentStatus.CREATED, PaymentType.DEPOSIT);
         paymentRepository.save(payment);
@@ -59,7 +59,7 @@ public class PaymentRepositoryTest {
         assertThat(payments.get(0).getStatus()).isEqualTo(PaymentStatus.CREATED);
     }
 
-    //@Test
+    @Test
     public void testFindByType() {
         Payment payment = createPayment(null, PaymentStatus.VALIDATED, PaymentType.CASH);
         paymentRepository.save(payment);

@@ -1,23 +1,18 @@
-package com.example.model;
+package com.example.dto;
 
-import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
 
-@Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Class {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class ClassDTO {
     private Long id;
     private String className;
     private String schoolName;
     private Integer number_of_students;
-    @ManyToMany
-    private List<Course> courses;
+    private List<CourseDTO> courses;
 }

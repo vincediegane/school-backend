@@ -10,6 +10,7 @@ import com.example.model.Payment;
 import com.example.model.Student;
 import com.example.repository.PaymentRepository;
 import com.example.repository.StudentRepository;
+import com.example.service.impl.PaymentServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

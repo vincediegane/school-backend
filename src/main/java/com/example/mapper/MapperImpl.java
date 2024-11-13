@@ -1,7 +1,9 @@
 package com.example.mapper;
 
+import com.example.dto.ClassDTO;
 import com.example.dto.PaymentDTO;
 import com.example.dto.StudentDTO;
+import com.example.model.Classe;
 import com.example.model.Payment;
 import com.example.model.Student;
 import org.springframework.beans.BeanUtils;
@@ -33,5 +35,17 @@ public class MapperImpl {
         StudentDTO studentDTO = new StudentDTO();
         BeanUtils.copyProperties(student, studentDTO);
         return studentDTO;
+    }
+
+    public ClassDTO fromClass(Classe classe) {
+        ClassDTO classDTO = new ClassDTO();
+        BeanUtils.copyProperties(classe, classDTO);
+        return classDTO;
+    }
+
+    public Classe fromClassDTO(ClassDTO classDTO) {
+        Classe classe = new Classe();
+        BeanUtils.copyProperties(classDTO, classe);
+        return classe;
     }
 }

@@ -1,10 +1,11 @@
-package com.example.service;
+package com.example.service.impl;
 
 import com.example.dto.StudentDTO;
 import com.example.exceptions.StudentNotFoundException;
 import com.example.mapper.MapperImpl;
 import com.example.model.Student;
 import com.example.repository.StudentRepository;
+import com.example.service.StudentService;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import java.util.List;
