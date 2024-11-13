@@ -10,15 +10,14 @@ name: School backend ci cd
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "develop", "staging" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "main", "develop", "staging" ]
 
 jobs:
   build:
 
     runs-on: ubuntu-latest
-    #runs-on: self-hosted
 
     steps:
     - uses: actions/checkout@v4
@@ -34,9 +33,61 @@ jobs:
     - name: Build & Push Docker Image
       uses: mr-smithers-excellent/docker-build-push@v5
       with:
-        image: vincediegane/demo-app
+        image: ${{ secrets.REGISTRY }}
         tags: latest
         registry: docker.io
         dockerfile: Dockerfile
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
+
+#  deploy:
+#    needs: build
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout Code
+#        uses: actions/checkout@v4
+#      - name: Configure AWS
+#        uses: aws-actions/configure-aws-credentials@v1
+#        with:
+#          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#          aws-region: ${{ secrets.AWS_REGION }}
+#
+##      - name: Generate docker compose file
+##        if: ${{ github.ref != 'refs/heads/main' }}
+##        env:
+##          ENV_SUFFIX: ${{ github.ref == 'refs/heads/main' && 'prod' || github.ref == 'refs/heads/develop' && 'dev' || github.ref == 'refs/heads/staging' && 'staging' }}
+##          REGISTRY: ${{ secrets.REGISTRY }}
+##          DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+##          DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
+##        run: |
+##          echo "Generating docker compose file ..."
+##          echo "${{ secrets.SSH_PRIVATE_KEY }}" > /tmp/private_key.pem
+##          chmod 600 /tmp/private_key.pem
+##          ssh -o StrictHostKeyChecking=no -i /tmp/private_key.pem ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} << 'EOF'
+##
+##          cat <<EOF >docker-compose.yml
+##          version: '3.7'
+##
+##          services:
+##            school-backend:
+##              image: "${{ env.REGISTRY }}:latest"
+##              environment:
+##                USER: "postgres"
+##                PASSWORD: "${{ env.DATABASE_PASSWORD }}"
+##                HOST: "${{ env.DATABASE_HOST }}"
+##              ports:
+##                - "8080:8080"
+##          EOF
+#      - name: Deploy to EC2
+#        run: |
+#          echo "Deploying to EC2 instance ..."
+#          echo "${{ secrets.SSH_PRIVATE_KEY }}" > /tmp/private_key.pem
+#          chmod 600 /tmp/private_key.pem
+#          ssh -o StrictHostKeyChecking=no -i /tmp/private_key.pem ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} << 'EOF'
+#          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+#          docker stop school-backend || true
+#          docker rm school-backend || true
+#          docker pull ${{ secrets.REGISTRY }}:latest
+#          docker run -d --name school-backend -p 8080:8080 -t ${{ secrets.REGISTRY }}
+#          EOF
