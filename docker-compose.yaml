@@ -1,28 +1,72 @@
 version: '3.8'
 
 services:
-  db:
-    image: postgres:15
-    container_name: db
+# Service db avec Postgres
+#  db:
+#    image: postgres:15
+#    container_name: db
+#    environment:
+#      - POSTGRES_USER=admin
+#      - POSTGRES_PASSWORD=admin
+#      - POSTGRES_DB=school_db
+#    ports:
+#      - "5432:5432"
+#    volumes:
+#      - pgdata:/var/lib/postgresql/data
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-docker-demo
     environment:
-      - POSTGRES_USER=admin
-      - POSTGRES_PASSWORD=admin
-      - POSTGRES_DB=school_db
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: docker_demo_db
+      MYSQL_USER: dockeruser
+      MYSQL_PASSWORD: dockerpassword
     ports:
-      - "5432:5432"
+      - "3307:3306"
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-prootpassword"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - docker-demo-network
 
-  school-app:
-    image: vincediegane/demo-app
-    build: .
+#  school-app:
+#    image: vincediegane/demo-app
+#    build: .
+#    ports:
+#      - "8080:8080"
+#    environment:
+#      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/school_db
+#      SPRING_DATASOURCE_USERNAME: admin
+#      SPRING_DATASOURCE_PASSWORD: admin
+#    depends_on:
+#      - db
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: school-demo-app
     ports:
       - "8080:8080"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/school_db
-      SPRING_DATASOURCE_USERNAME: admin
-      SPRING_DATASOURCE_PASSWORD: admin
+      SPRING_PROFILE_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-docker-demo:3306/docker_demo_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: rootpassword
     depends_on:
-      - db
+      mysql:
+        condition: service_healthy
+    networks:
+      - docker-demo-network
+    restart: unless-stopped
+
+networks:
+  docker-demo-network:
+    driver: bridge
+
 volumes:
-  pgdata:
+  mysql_data:
+#  pgdata:
